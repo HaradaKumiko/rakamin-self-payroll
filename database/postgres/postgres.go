@@ -11,8 +11,7 @@ import (
 func DBInit() *gorm.DB {
 	config := config.NewConfig()
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=disable TimeZone=Asia/Jakarta",
-		config.GetHost(), config.GetUser(), config.GetPass(), config.GetDBName(), config.GetPort()
-	)
+		config.GetHost(), config.GetUser(), config.GetPass(), config.GetDBName(), config.GetPort())
 	db, err := gorm.Open(postgresDriver.Open(dsn), &gorm.Config{})
 
 	if err != nil {
