@@ -1,0 +1,26 @@
+services:
+  postgres-db:
+      image: postgres:alpine3.16
+      healthcheck:
+        test: [ "CMD", "pg_isready", "-U", "postgres" ]
+        timeout: 30s
+        interval: 5s
+        retries: 10
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: self_payroll
+
+  self-payroll-app:
+      image: haradakumiko/self-payroll-app
+      ports:
+        - 8080:8080
+      environment:
+        DB_HOST: db
+        DB_PORT: 5432
+        DB_NAME: self_payroll
+        DB_USER: postgres
+        DB_PASS: postgres
+      depends_on:
+        postgres-db:
+          condition: service_healthy

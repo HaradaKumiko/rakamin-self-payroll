@@ -1,4 +1,4 @@
-package domain
+package models
 
 type Position struct {
 	ID     int64  `json:"id" gorm:"primaryKey"`

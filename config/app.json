@@ -8,6 +8,11 @@
     "port": ":6969"
   },
   "credential": {
-    "database_url": "postgres://root:root@127.0.0.1:5432/self_payroll"
+    "database_postgres_host": "localhost",
+    "database_postgres_user": "postgres",
+    "database_postgres_password": "postgres",
+    "database_postgres_port": "5432",
+    "database_postgres_database": "self_payroll"
+
   }
 }
