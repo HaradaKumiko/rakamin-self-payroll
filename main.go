@@ -62,7 +62,6 @@ func main() {
 	err := printASCIIArtFromFile(*asciiFile)
 
 	fmt.Printf("apps running on %s\n", color.Green(config.GetString("server.port")))
-	logrus.Info("info")
 	err = server.Start(config.GetString("server.port"))
 
 	if err != nil {

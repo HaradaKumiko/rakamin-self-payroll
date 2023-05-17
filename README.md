@@ -28,7 +28,7 @@ git clone https://github.com/HaradaKumiko/rakamin-self-payroll.git
 
 Open this project on your terminal 
 ```bash
-cd /rakamin-self-payroll
+cd rakamin-self-payroll
 ```
 run this command to install all packages 
 ```bash
