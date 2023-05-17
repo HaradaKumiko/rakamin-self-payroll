@@ -1,40 +1,45 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
-type (
-	Config struct {
-	}
-)
+func InitializeConfig(filename string) error {
+	splits := strings.Split(filepath.Base(filename), ".")
 
-func NewConfig() *Config {
-	err := godotenv.Load()
+	viper.SetConfigName(filepath.Base(splits[0]))
+	viper.AddConfigPath(filepath.Dir(filename))
+	viper.SetConfigType(splits[1])
+
+	err := viper.ReadInConfig()
 	if err != nil {
-		logrus.Fatal("Error... :" + err.Error())
+		logrus.Fatal("Error : " + err.Error())
+		return err
 	}
-	return &Config{}
+	return nil
 }
 
-func (c Config) GetHost() string {
-	return os.Getenv("DB_HOST")
+func isSet(key string) {
+	if !viper.IsSet(key) {
+		logrus.Fatal("Configuration key %s not found", key)
+		os.Exit(1)
+	}
+}
+func GetString(key string) string {
+	isSet(key)
+	return viper.GetString(key)
 }
 
-func (c Config) GetDBName() string {
-	return os.Getenv("DB_NAME")
+func GetInt(key string) int {
+	isSet(key)
+	return viper.GetInt(key)
 }
 
-func (c Config) GetPort() string {
-	return os.Getenv("DB_PORT")
-}
-
-func (c Config) GetUser() string {
-	return os.Getenv("DB_USER")
-}
-
-func (c Config) GetPass() string {
-	return os.Getenv("DB_PASS")
+func GetBool(key string) bool {
+	isSet(key)
+	return viper.GetBool(key)
 }

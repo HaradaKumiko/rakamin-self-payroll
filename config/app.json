@@ -8,7 +8,7 @@
     "port": ":6969"
   },
   "credential": {
-    "database_postgres_host": "localhost",
+    "database_postgres_host": "127.0.0.1",
     "database_postgres_user": "postgres",
     "database_postgres_password": "postgres",
     "database_postgres_port": "5432",
