@@ -12,6 +12,7 @@ import (
 	"self-payroll-rakamin/config"
 	"self-payroll-rakamin/database/postgres"
 	"self-payroll-rakamin/migration"
+	"self-payroll-rakamin/router"
 )
 
 var (
@@ -54,6 +55,8 @@ func main() {
 	postgresDatabase := postgres.DBInit()
 
 	migration.Migrate(postgresDatabase)
+
+	router.InitRouter(server, postgresDatabase)
 
 	server.GET("/", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, "<img  style=\"display: block; margin: auto;\" git  src=\"https://preview.redd.it/e6i2fgwn1ng71.jpg?width=640&crop=smart&auto=webp&s=8eea2b644d2b00bd5110343bdeea1f75be3daf4c\" />")
