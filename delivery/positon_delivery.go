@@ -1,11 +1,12 @@
 package delivery
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"self-payroll-rakamin/app/domain/models"
 	"self-payroll-rakamin/app/domain/web"
-	"self-payroll-rakamin/util/response"
+	"self-payroll-rakamin/util"
 )
 
 type (
@@ -32,17 +33,17 @@ func (p *positionDelivery) StorePositionHandler(e echo.Context) error {
 	var req web.PositionRequest
 
 	if err := e.Bind(&req); err != nil {
-		response := response.FormatterJSON{
-			Success: false,
-			Message: "Something Wrong" + err.Error(),
-			Data:    nil,
-		}
-		return e.JSON(http.StatusUnprocessableEntity, response)
+		return util.ResponseError(e, "Something Wrong", err.Error())
+	}
+
+	if err := e.Validate(&req); err != nil {
+		errVal := err.(validator.ValidationErrors)
+		return util.ResponseError(e, "Error Validation", errVal.Error())
 	}
 
 	position, err := p.positionService.StorePosition(ctx, &req)
 	if err != nil {
-		response := response.FormatterJSON{
+		response := util.FormatterJSON{
 			Success: false,
 			Message: "Something Wrong" + err.Error(),
 			Data:    nil,
@@ -50,7 +51,7 @@ func (p *positionDelivery) StorePositionHandler(e echo.Context) error {
 		return e.JSON(http.StatusInternalServerError, response)
 	}
 
-	response := response.FormatterJSON{
+	response := util.FormatterJSON{
 		Success: true,
 		Message: "Success Create Position",
 		Data:    position,

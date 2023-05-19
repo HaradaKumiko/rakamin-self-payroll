@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/color"
 	"github.com/sirupsen/logrus"
@@ -18,6 +19,14 @@ import (
 var (
 	cfgFile, asciiFile *string
 )
+
+type CustomValidator struct {
+	validator *validator.Validate
+}
+
+func (cv *CustomValidator) Validate(i interface{}) error {
+	return cv.validator.Struct(i)
+}
 
 func init() {
 	cfgFile = flag.String("c", "./config/app.json", "Configuration")
@@ -49,6 +58,7 @@ func main() {
 	}
 
 	server := echo.New()
+	server.Validator = &CustomValidator{validator: validator.New()}
 	server.HideBanner = true
 	server.HidePort = true
 
