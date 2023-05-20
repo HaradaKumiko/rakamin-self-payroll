@@ -14,6 +14,7 @@ Installed Module
 - spf13/viper 
 - gorm.io/driver/postgres
 - gorm.io/gorm
+- go-ozzo/ozzo-validation
 ---
 
 ## Installation
